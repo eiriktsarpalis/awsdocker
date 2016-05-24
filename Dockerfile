@@ -1,12 +1,13 @@
 FROM mono:latest
 
-COPY . .
-ENV WORKER_EXE packages/MBrace.AWS/tools/mbrace.awsworker.exe
+ENV MBRACE_VERSION 0.0.1-alpha
+ENV AWS_REGION eu-central-1
+#ENV AWS_ACCESS_KEY_ID <my access key>
+#ENV AWS_SECRET_ACCESS_KEY <my secret key>
 
-RUN mono ./.paket/paket.bootstrapper.exe
-RUN mono ./.paket/paket.exe restore
+RUN curl -OJL https://github.com/fsprojects/Paket/releases/download/2.66.3/paket.bootstrapper.exe
+RUN mono paket.bootstrapper.exe
+RUN mono paket.exe init
+RUN mono paket.exe add nuget MBrace.AWS version $MBRACE_VERSION
 
-RUN echo '#!/bin/sh\nmono ${WORKER_EXE} $*' > ./mbraceaws
-RUN chmod +x ./mbraceaws
-
-ENTRYPOINT ["./mbraceaws"]
+CMD mono packages/MBrace.AWS/tools/mbrace.awsworker.exe --region $AWS_REGION --credentials $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
