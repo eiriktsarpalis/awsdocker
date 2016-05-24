@@ -1,5 +1,7 @@
 FROM mono:latest
 
+WORKDIR ~
+
 ENV MBRACE_VERSION 0.0.1-alpha
 ENV AWS_REGION eu-central-1
 #ENV AWS_ACCESS_KEY_ID <my access key>
