@@ -15,4 +15,6 @@ RUN mono paket.bootstrapper.exe
 RUN mono paket.exe init
 RUN mono paket.exe add nuget MBrace.AWS version $MBRACE_VERSION
 
-CMD mono packages/MBrace.AWS/tools/mbrace.awsworker.exe --region $AWS_REGION --credentials $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+CMD mono packages/MBrace.AWS/tools/mbrace.awsworker.exe \
+	--region $AWS_REGION --worker-id container-`hostname` \
+	--credentials $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
