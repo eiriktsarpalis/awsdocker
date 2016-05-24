@@ -7,6 +7,9 @@ ENV AWS_REGION eu-central-1
 #ENV AWS_ACCESS_KEY_ID <my access key>
 #ENV AWS_SECRET_ACCESS_KEY <my secret key>
 
+# AWS EB requires at least one exposed port; use one at random
+EXPOSE 4242
+
 RUN curl -OJL https://github.com/fsprojects/Paket/releases/download/2.66.3/paket.bootstrapper.exe
 RUN mono paket.bootstrapper.exe
 RUN mono paket.exe init
